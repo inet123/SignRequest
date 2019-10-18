@@ -125,7 +125,7 @@ class Client {
      * @return string The document id
      * @throws Exceptions\SendSignRequestException
      */
-    public function sendSignRequest($documentId, $sender, $recipients, $message = null) {
+    public function sendSignRequest($documentId, $sender, $recipients, $message = null, $subject = null) {
         foreach ( $recipients as &$r ) {
             if (!array_key_exists('language', $r)) {
                 $r['language'] = self::$defaultLanguage;
@@ -136,7 +136,8 @@ class Client {
                 ->setData(json_encode([
                     "document"=>self::API_BASEURL . "/documents/" . $documentId . "/",
                     "from_email"=>$sender,
-                    "message"=>$message,
+		    "message"=>$message,
+		    "subject"=>$subject,
                     "signers"=>$recipients,
                     "disable_text"=>true,
                     "disable_attachments"=>true,
