@@ -169,6 +169,23 @@ class Client {
     }
 
     /**
+     * Cancel a signrequest document
+     * @param string $signRequestId uuid
+     * @return \stdClass response
+     * @throws Exceptions\RemoteException
+     */
+    public function cancelSignRequest($signRequestId) {
+        $response = $this->newRequest("signrequests/{$signRequestId}/cancel_signrequest", "post")
+                ->setHeader("Content-Type", "application/json")
+                ->send();
+        if ($this->hasErrors($response)) {
+            throw new Exceptions\RemoteException($response);
+        }
+        $responseObj = json_decode($response->body);
+        return $responseObj;
+    }
+
+    /**
      * Gets the current status for a sign request.
      * @param string $signRequestId uuid
      * @return \stdClass response
